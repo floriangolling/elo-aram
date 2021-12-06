@@ -6,6 +6,24 @@ const app               = express();
 const User              = require('./src/database/models/user');
 const { Match, UserMatch } = require('./src/database/models');
 
+app.get('/user/:name', async (req, res) => {
+    const {name} = req.params;
+    try {
+        if (!name) {
+            res.status(400).send({message: "not a valid name"})
+        }
+        const puuid = await leagueController.userController.getUserPUUIDByNameEUW(name)
+        let user = await User.findOne({where: {puuid: puuid}});
+        if (!user) {
+            user = await User.create({puuid: puuid, username: name})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).send(error)
+    }
+
+});
+
 function getRatingDelta(myRating, opponentRating, myGameResult) {
     if ([0, 0.5, 1].indexOf(myGameResult) === -1) {
       return null;
@@ -80,16 +98,19 @@ async function findMatches(name) {
                     }
                 }
                 const elo1 = getRatingDelta(teamID1Elo, teamID2Elo, 1);
+                const elo2 = getRatingDelta(teamID1Elo, teamID2Elo, 0);
+                const elo3 = getRatingDelta(teamID2Elo, teamID1Elo, 1);
+                const elo4 = getRatingDelta(teamID2Elo, teamID1Elo, 0);
                 for (participants of ma.participants) {
                     let user = await User.findOne({where: {puuid: participants.puuid}});
                     if (winner == 1 && participants.teamId == teamID1) {
                         user.set({elo: user.elo + elo1})
                     } else if (winner == 0 && participants.teamId == teamID1) {
-                        user.set({elo: user.elo - elo1})
+                        user.set({elo: user.elo + elo2})
                     } else if (winner == 1 && participants.teamId == teamID2) {
-                        user.set({elo: user.elo - elo1})
+                        user.set({elo: user.elo + elo4})
                     } else if (winner == 0 && participants.teamId == teamID2) {
-                        user.set({elo: user.elo + elo1})
+                        user.set({elo: user.elo + elo3})
                     }
                     await user.save()
                 }
@@ -102,7 +123,7 @@ async function findMatches(name) {
 
 DBinfos.init(DBinfos.sequelize)
 .then(() => {
-    app.listen(8080, () => {
+    app.listen(8081, () => {
         console.log('running on http://localhost:8080');
     });
 }).catch((err) => {
@@ -147,5 +168,7 @@ async function checkForUpdate() {
     })
     checkForUpdate()
 }
+
+//resetElo();
 
 checkForUpdate()
