@@ -17,6 +17,7 @@ app.get('/user/:name', async (req, res) => {
         if (!user) {
             user = await User.create({puuid: puuid, username: name})
         }
+        res.send({winrate: user.winrate, username: user.username, elo: user.elo, games: user.games, wins: user.wins});
     } catch (error) {
         console.log(error)
         res.status(500).send(error)
@@ -38,25 +39,29 @@ function getRatingDelta(myRating, opponentRating, myGameResult) {
     return myRating + getRatingDelta(myRating, opponentRating, myGameResult);
   }
 
-async function findMatches(name) {
+async function findMatches(puuid) {
     let newMatch = false
     const promise = await new Promise(async (resolve, reject) => {
         let matchesInfosArray = []
         try {
-        const puuid = await leagueController.userController.getUserPUUIDByNameEUW(name)
         const matches = await leagueController.matchController.getMatchesIDsFromPPUID(puuid, 10);
         for (const match of matches) {
             const m = await leagueController.matchController.getMatchInfoFromID(match);
             matchesInfosArray.push(m)
         }
         } catch (error ){
-            reject(error)
+            console.log(error)
+            resolve(error)
         }
         const m = filters.filterMatchesInfosARAM(matchesInfosArray)
         for (ma of m) {
             for (participants of ma.participants) {
                 try {
                     let user = await User.findOne({where: {puuid: participants.puuid}});
+                    if (user && participants.summonerName != user.username) {
+                        await user.set({username: participants.summonerName})
+                        await user.save();
+                    }
                     if (!user) {
                         user = await User.create({puuid: participants.puuid, username: participants.summonerName})
                     }
@@ -103,15 +108,19 @@ async function findMatches(name) {
                 const elo4 = getRatingDelta(teamID2Elo, teamID1Elo, 0);
                 for (participants of ma.participants) {
                     let user = await User.findOne({where: {puuid: participants.puuid}});
+                    await user.set({games: user.games + 1})
                     if (winner == 1 && participants.teamId == teamID1) {
-                        user.set({elo: user.elo + elo1})
+                        await user.set({elo: user.elo + elo1})
+                        await user.set({wins: user.wins + 1});
                     } else if (winner == 0 && participants.teamId == teamID1) {
-                        user.set({elo: user.elo + elo2})
+                        await user.set({elo: user.elo + elo2})
                     } else if (winner == 1 && participants.teamId == teamID2) {
-                        user.set({elo: user.elo + elo4})
+                        await user.set({elo: user.elo + elo4})
                     } else if (winner == 0 && participants.teamId == teamID2) {
-                        user.set({elo: user.elo + elo3})
+                        await user.set({wins: user.wins + 1});
+                        await user.set({elo: user.elo + elo3})
                     }
+                    await user.set({winrate: (user.wins / user.games)  * 100});
                     await user.save()
                 }
             }
@@ -125,6 +134,7 @@ DBinfos.init(DBinfos.sequelize)
 .then(() => {
     app.listen(8081, () => {
         console.log('running on http://localhost:8080');
+        checkForUpdate()
     });
 }).catch((err) => {
     console.log('\x1b[31m%s\x1b[0m', err);
@@ -151,15 +161,8 @@ async function checkForUpdate() {
         try {
             const users = await User.findAll();
             for (const user of users) {
-                await new Promise(async(resolve, reject) => {
-                    try {
-                        await findMatches(user.username)
-                        await sleep(60000)
-                        resolve()
-                    } catch (error) {
-                        reject(error)
-                    }
-                })
+                await findMatches(user.puuid)
+                await sleep(8600)
             }
         } catch (error) {
             console.log(error);
@@ -170,5 +173,3 @@ async function checkForUpdate() {
 }
 
 //resetElo();
-
-checkForUpdate()

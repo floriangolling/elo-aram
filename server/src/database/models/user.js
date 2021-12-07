@@ -19,8 +19,16 @@ class User extends Sequelize.Model {
                 defaultValue: 1200
             },
             winrate: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.FLOAT,
                 defaultValue: 100
+            },
+            games: {
+                type: Sequelize.INTEGER,
+                defaultValue: 0
+            },
+            wins: {
+                type: Sequelize.INTEGER,
+                defaultValue: 0
             }
         }, {
             sequelize,
