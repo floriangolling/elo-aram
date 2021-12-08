@@ -5,7 +5,8 @@ class Match extends Sequelize.Model {
         Match.init({
             matchID: {
                 type: Sequelize.DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                unique: true
             },
             matchInfos: {
                 type: Sequelize.DataTypes.JSON,
