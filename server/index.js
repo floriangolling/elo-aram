@@ -25,8 +25,11 @@ async function getMatchesFilter(puuid) {
             const m = filters.filterMatchesInfosARAM(array);
             resolve(m);
         } catch (error) {
+            if (error.response && error.response.status === 429) {
+                numberOfRequests = 100;
+            }
             console.log(error);
-            reject(error);
+            resolve([]);
         }
     })
 }
@@ -160,8 +163,8 @@ function getRatingDelta(myRating, opponentRating, myGameResult) {
 
 DBinfos.init(DBinfos.sequelize)
 .then(() => {
-    app.listen(8081, () => {
-        console.log('running on http://localhost:8080');
+    app.listen(8081, async () => {
+        console.log('running on http://localhost:8081');
         checkForUpdate()
     });
 }).catch((err) => {
@@ -192,12 +195,15 @@ function millisToMinutesAndSeconds(millis) {
   
 
 async function checkForUpdate() {
+    const id = parseInt(require('fs').readFileSync('last.txt', 'utf-8'))
     const promise = await new Promise(async (resolve, reject) => {
         try {
-            const users = await User.findAll();
+            const users = await User.findAll({order: [['id', 'ASC']]});
             let start = new Date().getTime();
             for (const user of users) {
-                console.log(numberOfRequests)
+                if (user.id <= id)
+                    continue;
+                console.log(user.username)
                 let end = new Date().getTime();
                 let time = end - start;
                 if (time >= 130000) {
@@ -205,23 +211,29 @@ async function checkForUpdate() {
                     start = new Date().getTime();
                     numberOfRequests = 0;
                 }
-                if (numberOfRequests >= 100 - config.numberofGame) {
+                if (numberOfRequests >= 100 - (config.numberofGame + 2)) {
                     console.log('too many request, waiting for reset...')
                     let endTwo = new Date().getTime();
                     while (endTwo - start < 130000) {
                         endTwo = new Date().getTime();
-                        console.log(millisToMinutesAndSeconds(endTwo - start))
+                        //console.log(millisToMinutesAndSeconds(endTwo - start))
                     }
                     numberOfRequests = 0;
                     start = new Date().getTime();
                     console.log('reset')
                 }
                 await refreshUser(user.puuid)
+                require('fs').writeFileSync('last.txt', user.id.toString() ,{
+                    encoding: 'utf-8'
+                })
             }
         } catch (error) {
             console.log(error);
         }
         resolve()
+    })
+    require('fs').writeFileSync('last.txt', "0" ,{
+        encoding: 'utf-8'
     })
     checkForUpdate()
 }

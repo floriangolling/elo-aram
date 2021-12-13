@@ -2,6 +2,18 @@ const express = require('express')
 const userRouter = express.Router();
 const leagueController = require('../controllers/league-api')
 const User = require('../database/models/user');
+const UserMatch = require('../database/models/user_match');
+const Match = require('../database/models/match');
+
+userRouter.get('/champion/:champion/:name', async (req, res, next) => {
+    try {
+        const user = User.findOne({where: {username: req.params.name}})
+        const userMatch = UserMatch.findAll({where: {}})
+        console.log(user)
+    } catch (error) {
+        console.log(error);
+    }
+})
 
 
 userRouter.get('/:name', async(req, res) => {
