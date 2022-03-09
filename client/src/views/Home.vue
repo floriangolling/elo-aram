@@ -94,7 +94,7 @@
             <h3 class="title is-4 league-text lc">BEST CHAMP</h3>
             <div class="content">
               <div class="h3 lc is-6"> Name: </div>
-              <div class="h3 lc is-6"> {{this.maxPlayedChamp.championName}} </div>
+              <div class="h3 lc is-6" style="font-weight:800;font-size:1rem"> {{this.maxPlayedChamp.championName}} </div>
               <div class="h3 mt-2"> Played </div>
               <div class="h3 mt-4"> {{this.maxPlayedChamp.games}} games.</div>
               <div class="h3"> {{this.maxPlayedChamp.winrate}}% winrate </div>
@@ -139,7 +139,7 @@
             <h3 class="title is-4 league-text lc">BEST DUOQ</h3>
             <div class="content">
               <div class="h3 lc is-6"> Name: </div>
-              <div class="h3 lc is-6"> {{this.mostPlayedWith.username}} </div>
+              <div class="h3 lc is-6" style="font-weight:800;font-size:1rem"> {{this.mostPlayedWith.username}} </div>
               <div class="h3 mt-2"> Played </div>
               <div class="h3 mt-4"> {{this.mostPlayedWith.played}} games together.</div>
             </div>
@@ -266,7 +266,7 @@ export default {
         const {data} = request;
         this.winrate = Math.trunc(data.winrate) + '%'
         this.games = data.games;
-        this.mmr = data.elo
+        this.mmr = this.getRank(data.elo);
         this.kda = data.totalKda.kills.toFixed(1) + '/' + data.totalKda.deaths.toFixed(1) + '/' + data.totalKda.assists.toFixed(1);
         let mySeries = [
           {name: 'Winrate',
@@ -275,6 +275,7 @@ export default {
         this.mostPlayedWith = data.mostPlayedWith;
         this.championGames = data.championsWinrate;
         this.maxPlayedChamp = data.maxPlayedChamp;
+        this.maxPlayedChamp.winrate = Math.trunc(this.maxPlayedChamp.winrate);
         this.$refs.realtimeChart.updateSeries(mySeries, true);
       } catch (error) {
         console.log(error);
@@ -288,6 +289,102 @@ export default {
         games: myChampion.games.toFixed(1)
       }
       this.selectedChampion = newSelectedChampion;
+    },
+    getRank(mmr) {
+      if (mmr < 100) {
+        return ('Iron V')
+      }
+      if (mmr < 200) {
+        return ('Iron IV')
+      }
+      if (mmr < 300) {
+        return ('Iron III')
+      }
+      if (mmr < 200) {
+        return ('Iron II')
+      }
+      if (mmr < 500) {
+        return ('Iron I')
+      }
+      if (mmr < 540) {
+        return ('Bronze V')
+      }
+      if (mmr < 580) {
+        return ('Bronze IV')
+      }
+      if (mmr < 620) {
+        return ('Bronze III')
+      }
+      if (mmr < 660) {
+        return ('Bronze II')
+      }
+      if (mmr < 700) {
+        return ('Bronze I')
+      }
+      if (mmr < 760) {
+        return ('Silver V')
+      }
+      if (mmr < 820) {
+        return ('Silver IV')
+      }
+      if (mmr < 880) {
+        return ('Silver III')
+      }
+      if (mmr < 940) {
+        return ('Silver II')
+      }
+      if (mmr < 1000) {
+        return ('Silver I')
+      }
+      if (mmr < 1060) {
+        return ('Gold V')
+      }
+      if (mmr < 1120) {
+        return ('Gold IV')
+      }
+      if (mmr < 1180) {
+        return ('Gold III')
+      }
+      if (mmr < 1240) {
+        return ('Gold II')
+      }
+      if (mmr < 1300) {
+        return ('Gold I')
+      }
+      if (mmr < 1380) {
+        return ('Platinum V')
+      }
+      if (mmr < 1460) {
+        return ('Platinum IV')
+      }
+      if (mmr < 1540) {
+        return ('Platinum III')
+      }
+      if (mmr < 1620) {
+        return ('Platinum II')
+      }
+      if (mmr < 1700) {
+        return ('Platinum I')
+      }
+      if (mmr < 1740) {
+        return ('Diamond V')
+      }
+      if (mmr < 1780) {
+        return ('Diamond IV')
+      }
+      if (mmr < 1820) {
+        return ('Diamond III')
+      }
+      if (mmr < 1860) {
+        return ('Diamond II')
+      }
+      if (mmr < 1900) {
+        return ('Diamond I')
+      }
+      if (mmr >= 1900 && mmr < 2300) {
+        return ('Master')
+      } if (mmr >= 2300)
+        return ('Challenger')
     }
   },
 };
