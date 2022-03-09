@@ -1,100 +1,313 @@
 <template>
+  <div id="nav">
+    <nav class="navbar is-fixed-top is-transparent">
+    <div class="navbar-brand">
+      <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div id="navbarExampleTransparentExample" class="navbar-menu">
+      <div class="navbar-end league-text small-text" >
+        <a class="navbar-item" href="#nav">
+          <span class="icon">
+            <i class="fas fa-info"></i>
+          </span>
+          <span class="lc" >SEARCH</span>
+        </a>
+        <a class="navbar-item" href="#services">
+          <span class="icon">
+            <i class="fas fa-bars"></i>
+          </span>
+          <span class="lc" >INFORMATIONS</span>
+        </a>
+        <a class="navbar-item" href="#resume">
+          <span class="icon">
+            <i class="fas fa-file-alt"></i>
+          </span>
+        </a>
+      </div>
+    </div>
+  </nav>
+  <section class="section mt-6 " id="about">
+    <div class="section-heading">
+      <h3 class="title is-2 league-text lc">ELO ARAM</h3>
+      <h4 class="subtitle is-5 league-text lc">Your favorite elo's tracking tool.</h4>
+      <div class="container mb-6 league-text small-text text-ligher">
+        <p>EloAram is a tool to track your current level in aram and that of your friends, you can also access various resources to get to know you better. Find your most played champions, their win rate, or your best friend of aram..</p>
+      </div>
+    </div>
+    <div class="columns has-same-height is-gapless">
+      <div class="column">
+      </div>
+      <div class="column mt-4  is-two-fifths ">
+        <div class="card pl-6 pr-6 pt-6 fancy-border" style="background-color: #040e18">
+          <div class="card-content">
+            <h3 class="title is-4 league-text lc">SEARCH PROFILE</h3>
 
-  <section class="hero is-fullheight has-background">
-        <img class="hero-background" src='../assets/bg.jpg'>
-        <div class="hero-head">
-            <nav class="navbar">
-                    <div class="navbar-brand">
-                        <a class="navbar-item" href="../">
-                        </a>
-                        <span class="navbar-burger burger" data-target="navbarMenu">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </span>
-                    </div>
-                    <div id="navbarMenu" class="navbar-menu">
-                        <div class="navbar-start has-text-centered league-text mt-3" style="font-size:1.2rem">
-                          ELO ARAM
-                        </div>
-                        <div class="navbar-end">
-                            <div class="tabs is-right">
-                                <ul>
-                                    <li><a href="" style="color:#785a28;border-bottom:1px solid">HOME</a></li>
-                                    <li><a href="" style="color:#785a28;border-bottom: 1px solid">HELP</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-            </nav>
-        </div>
-        <div class="hero-body" style="height:100%">
-            <div class="container has-text-centered" style="height:100%">
-                <div class="columns is-centered">
-                    <div class="column is-5 pt-6 pb-6" style="border: 1px solid #785a28;background-color:#010a13 ">
-                        <div class="columns">
-                          <div class="column is-centered">
-                            <figure class="image is-128x128">
-                                <img src="../assets/iron-1.png" alt="Description" class="mt-2" style="position:absolute;display:inline">
-                            </figure>
-                          </div>
-                          <div class="column has-text-left league-text" style="font-size:1.75rem;font-weight:500; color:#785a28">
-                            <div class="div is-centered has-text-left">
-                                <div> Hekamo </div>
-                                <div> Iron I </div>
-                                <div> Winrate : 58% </div>
-                                <div> Games : 19 </div>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                    <div class="column is-6 is-offset-1">
-                        <h1 class="title is-2">
-                            Caca
-                        </h1>
-                        <h2 class="subtitle is-4">
-                          PIpi
-                        </h2>
-                        <br>
-                        <p class="has-text-centered">
-                            <a class="button is-medium is-info is-outlined">
-                                Crotte
-                            </a>
-                        </p>
-                    </div>
-                </div>
+            <div class="content mt-6">
+                <b-field label="">
+                    <b-input v-model="username" style="my-input"></b-input>
+                </b-field>
+              <b-button @click="getUser" class="league-text small-text mb-5 mt-5" style="background-color:#040e18;color:#785a28;border-color:#785a28"> Search </b-button>
+                <table class="table-profile league-text small-text mt-4" style="text-align:left">
+                <tr>
+                  <td>WINRATE:</td>
+                  <td>{{this.winrate}}</td>
+                </tr>
+                <tr>
+                  <td>GAMES:</td>
+                  <td>{{this.games}}</td>
+                </tr>
+                <tr>
+                  <td>RANK:</td>
+                  <td>{{this.mmr}}</td>
+                </tr>
+                <tr>
+                  <td>KDA AVERAGE:</td>
+                  <td>{{this.kda}}</td>
+                </tr>
+              </table>
             </div>
+            <br>
+          </div>
         </div>
-
-        <div class="hero-foot">
-            <div class="container">
-                <div class="tabs is-centered">
-                    <ul>
-                        <li><a class="l">@MADE BY FLORIAN.GOLLING@EPITECH.EU</a></li>
-                    </ul>
-                </div>
+      </div>
+      <div class="column">
+      </div>
+    </div>
+  </section>
+  <section class="section" id="services">
+    <div class="section-heading mb-6">
+      <h3 class="title is-4 league-text lc">MORE INFORMATIONS</h3>
+      <h4 class="subtitle is-5 has-text-white league-text">Your personal stats on your favorite champions.</h4>
+    </div>
+    <div class="container">
+      <div id="chart" class="mb-6">
+        <apexchart ref="realtimeChart" class="testChart fancy-border" type="line" height="350" :options="chartOptions" :series="series"></apexchart>
+      </div>
+      <div class="columns has-same-height">
+      <div class="column mt-4  is-one-quarter ">
+        <div class="card pl-6 pr-6 pt-6 fancy-border" style="background-color: #040e18">
+          <div class="card-content">
+            <h3 class="title is-4 league-text lc">BEST CHAMP</h3>
+            <div class="content">
+              <div class="h3 lc is-6"> Name: </div>
+              <div class="h3 lc is-6"> {{this.maxPlayedChamp.championName}} </div>
+              <div class="h3 mt-2"> Played </div>
+              <div class="h3 mt-4"> {{this.maxPlayedChamp.games}} games.</div>
+              <div class="h3"> {{this.maxPlayedChamp.winrate}}% winrate </div>
             </div>
+            <br>
+          </div>
         </div>
-    </section>
+      </div>              
+        <div class="column mt-4 ">
+        <div class="card pl-6 pr-6 pt-6 fancy-border" style="background-color: #040e18">
+          <div class="card-content">
+            <h3 class="title is-4 league-text lc">CHAMPIONS STATS</h3>
+            <div class="content">
+              <div class="select">
+              <select v-model="actualChampion" @change="changeChampion">
+                <option>Select Champion</option>
+                <option v-for="champion in championGames" v-bind:key="champion.championName"> {{champion.championName}} </option>
+              </select>
+              </div>
+                <table class="table-profile league-text small-text mt-6 " style="text-align:left">
+                <tr>
+                  <td>WINRATE:</td>
+                  <td>{{this.selectedChampion.winrate}}</td>
+                </tr>
+                <tr>
+                  <td>GAMES:</td>
+                  <td>{{this.selectedChampion.games}}</td>
+                </tr>
+                <tr>
+                  <td>KDA AVERAGE:</td>
+                  <td>{{this.selectedChampion.kda}}</td>
+                </tr>
+              </table>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
+      <div class="column mt-4 is-one-quarter ">
+        <div class="card pl-6 pr-6 pt-6 fancy-border" style="background-color: #040e18">
+          <div class="card-content">
+            <h3 class="title is-4 league-text lc">BEST DUOQ</h3>
+            <div class="content">
+              <div class="h3 lc is-6"> Name: </div>
+              <div class="h3 lc is-6"> {{this.mostPlayedWith.username}} </div>
+              <div class="h3 mt-2"> Played </div>
+              <div class="h3 mt-4"> {{this.mostPlayedWith.played}} games together.</div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>      
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="has-text-centered league-text lc" style="font-weight:800;font-size:0.9rem"> Made by @floriangolling</div>
+  </section>
+  </div>
 </template>
 
 <script>
-// @ is an alias to /src
+
+import VueApexCharts from 'vue-apexcharts'
+import axios from 'axios';
 
 export default {
   name: "Home",
   components: {
+    apexchart: VueApexCharts,
+  },
+  data() {
+    return {
+      maxPlayedChamp: {
+        games: '0',
+        winrate: '?',
+        championName: '?'
+      },
+      mostPlayedWith: {
+        username: '?',
+        played: '0'
+      },
+      actualChampion: 'Select Champion',
+      selectedChampion: {
+        kda: '',
+        winrate: '',
+        games: ''
+      },
+      championGames: [
+      ],
+      username: "",
+      winrate: "",
+      mmr: "",
+      games: '',
+      kda: '',
+      series: [{
+          name: "Winrate",
+          data: ['0']
+      }],
+      chartOptions: {
+        colors:['#785a28', '#785a28', '#785a28'],
+        chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'Overall winrate',
+          align: 'middle',
+          style: {
+            fontSize: '18px',
+            fontWeight: 600,
+            fontFamily: 'Friz Quadrata'
+          }
+        },
+        markers: {
+          colors: ['#cccccc']
+        },
+        grid: {
+          row: {
+            colors: ['transparent']
+          },
+          column: {
+            colors: ['transparent']
+          },
+          xaxis: {
+          },   
+          yaxis: {
+          }, 
+        },
+        xaxis: {
+          labels: {
+            show: true,
+            style: {
+              fontSize: '14px',
+              fontWeight: 600
+            },
+            offsetY: 5
+          },
+          categories: [],
+          tickAmount: 10,
+        },
+        yaxis: {
+          labels: {
+            show: true,
+            style: {
+              fontSize: '14px',
+              fontWeight: 600
+            },
+          },               
+          max: 100,
+          min: 0
+        }
+      }
+    }
+  },
+  methods: {
+    async getUser() {
+      try {
+        const request = await axios.get('http://localhost:8082/api/user/' + this.username)
+        const {data} = request;
+        this.winrate = Math.trunc(data.winrate) + '%'
+        this.games = data.games;
+        this.mmr = data.elo
+        this.kda = data.totalKda.kills.toFixed(1) + '/' + data.totalKda.deaths.toFixed(1) + '/' + data.totalKda.assists.toFixed(1);
+        let mySeries = [
+          {name: 'Winrate',
+          data: data.winrates}
+        ]
+        this.mostPlayedWith = data.mostPlayedWith;
+        this.championGames = data.championsWinrate;
+        this.maxPlayedChamp = data.maxPlayedChamp;
+        this.$refs.realtimeChart.updateSeries(mySeries, true);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async changeChampion() {
+      let myChampion = this.championGames.filter((elem) => elem.championName == this.actualChampion)[0];
+      let newSelectedChampion = {
+        kda: myChampion.kills.toFixed(1) + '/' + myChampion.deaths.toFixed(1) + '/' + myChampion.assists.toFixed(1),
+        winrate: myChampion.winrate.toFixed(1) + '%',
+        games: myChampion.games.toFixed(1)
+      }
+      this.selectedChampion = newSelectedChampion;
+    }
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 .league-text {
   font-weight: 500;
   font-size: 2.5rem;
   letter-spacing: 0.25rem;
   color: #785a28
+}
+
+.lc {
+    color: #785a28 !important;
+}
+
+.testChart {
+  background-color: #cccccc !important;
 }
 
 .l {
@@ -104,21 +317,55 @@ export default {
   color: #785a28 
 }
 
-.hero {
-  &.has-background {
-    position: relative;
-    overflow: hidden;
-  }
-  &-background {
-    position: absolute;
-    object-fit: cover;
-    object-position: center center;
-    width: 100%;
-    height: 100%;
-    &.is-transparent {
-      opacity: 0.3;
-    }
-  }
+.text-ligher {
+  color: #ffffff 
+}
+
+$input-hover-color: black;
+$input-focus-color: black;
+
+.input {
+  background-color: #cccccc !important;
+  text-align: center;
+  border: none !important;
+}
+
+.select:not(.is-multiple):not(.is-loading)::after {
+  border-color: #785a28 !important;
+}
+
+.select select{
+    background-color:#040e18 !important;
+    color:#785a28 !important;
+    border-color:#785a28 !important;
+    font-family: 'Friz Quadrata' !important;
+    font-weight: 400 !important;
+}
+
+.small-text {
+  font-size: 1rem;
+}
+
+body {
+  background-image: url('../assets/bg.jpg')
+}
+
+html {
+  background-color: transparent !important;
+}
+
+.navbar {
+  background-color: transparent !important;
+}
+
+.fancy-border {
+  border: 25px solid #785a28;
+  border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='75' height='75'%3E%3Cg fill='none' stroke='%23B88846' stroke-width='2'%3E%3Cpath d='M1 1h73v73H1z'/%3E%3Cpath d='M8 8h59v59H8z'/%3E%3Cpath d='M8 8h16v16H8zM51 8h16v16H51zM51 51h16v16H51zM8 51h16v16H8z'/%3E%3C/g%3E%3Cg fill='%23B88846'%3E%3Ccircle cx='16' cy='16' r='2'/%3E%3Ccircle cx='59' cy='16' r='2'/%3E%3Ccircle cx='59' cy='59' r='2'/%3E%3Ccircle cx='16' cy='59' r='2'/%3E%3C/g%3E%3C/svg%3E") 25;
+}
+
+.content table td {
+  color: #cccccc;
+  border: 1px solid #785a28 !important;
 }
 </style>
- 
+  
