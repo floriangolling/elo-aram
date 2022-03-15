@@ -5,10 +5,13 @@
 </template>
 
 <style lang="scss">
-
 @font-face {
   font-family: "Friz Quadrata";
   src: url("./assets/Friz Quadrata Std Medium.otf");
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 #app {
