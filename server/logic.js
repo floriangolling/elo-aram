@@ -19,8 +19,6 @@ async function getMatchesFilter(puuid) {
                 let Matche = await Match.findOne({where: {matchID: matchNameNoEUW}})
                 if (Matche) {
                     console.log('skipping')
-                    console.log(Matche.matchID)
-                    console.log(matchNameNoEUW);
                     continue;
                 }
                 const m = await leagueController.matchController.getMatchInfoFromID(match);
@@ -73,6 +71,8 @@ async function checkWinner(match) {
 
         for (const participants of match.participants) {
             const user = await User.findOne({where: {puuid: participants.puuid }});
+            if (user.elo < 0)
+                await user.update({elo: 0});
             if (user) {
                 numberFound++;
                 eloStacked += user.elo;
@@ -158,7 +158,23 @@ async function refreshUser(puuid) {
         try {
             let matches = await getMatchesFilter(puuid)
             for (const match of matches) {
-                await processNewMatch(match);
+                let myMatch = {
+                    participants: [],
+                    id: match.id
+                };
+                for (const par of match.participants) {
+                    myMatch.participants.push({
+                        puuid: par.puuid,
+                        summonerName: par.summonerName,
+                        teamId: par.teamId,
+                        win: par.win,
+                        kills: par.kills,
+                        deaths: par.deaths,
+                        assists: par.assists,
+                        championName: par.championName
+                    })
+                }
+                await processNewMatch(myMatch);
             }
             resolve();
         } catch (error) {

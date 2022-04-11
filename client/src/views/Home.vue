@@ -1,9 +1,15 @@
 <template>
   <div id="nav">
-    <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+    <nav
+      class="navbar is-transparent"
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div class="navbar-brand">
         <div
-          class="navbar-burger" v-on:click="showNav = !showNav" v-bind:class="{ 'is-active' : showNav}"
+          class="navbar-burger"
+          v-on:click="showNav = !showNav"
+          v-bind:class="{ 'is-active': showNav }"
           data-target="navbarExampleTransparentExample"
           aria-expanded="false"
         >
@@ -12,7 +18,15 @@
           <span></span>
         </div>
       </div>
-      <div id="navbarExampleTransparentExample" class="navbar-menu" v-bind:class="{ 'is-active' : showNav,  'fancy-border' : showNav, 'myNavMenu': showNav}">
+      <div
+        id="navbarExampleTransparentExample"
+        class="navbar-menu"
+        v-bind:class="{
+          'is-active': showNav,
+          'fancy-border': showNav,
+          myNavMenu: showNav,
+        }"
+      >
         <div class="navbar-end league-text small-text">
           <a class="navbar-item" href="#nav">
             <span class="icon">
@@ -47,18 +61,15 @@
       <div class="columns has-same-height is-gapless">
         <div class="column"></div>
         <div class="column mt-4 is-two-fifths">
-          <div
-            class="card pt-6 fancy-border"
-            style="background-color: #040e18"
-          >
+          <div class="card pt-6 fancy-border" style="background-color: #040e18">
             <div class="card-content">
               <h3 class="title is-4 league-text lc">SEARCH PROFILE</h3>
 
               <div class="content mt-6">
                 <div class="container">
-                <b-field label="">
+                  <b-field label="">
                     <b-input v-model="username" class="is-centered"></b-input>
-                </b-field>
+                  </b-field>
                 </div>
                 <b-button
                   @click="getUser"
@@ -72,27 +83,27 @@
                   Search
                 </b-button>
               </div>
-                <table
-                  class="container table-profile league-text small-text mt-4 small-text-iphone"
-                  style="text-align: left"
-                >
-                  <tr>
-                    <td>WINRATE:</td>
-                    <td>{{ this.winrate }}</td>
-                  </tr>
-                  <tr>
-                    <td>GAMES:</td>
-                    <td>{{ this.games }}</td>
-                  </tr>
-                  <tr>
-                    <td>RANK:</td>
-                    <td>{{ this.mmr }}</td>
-                  </tr>
-                  <tr>
-                    <td>KDA AVERAGE:</td>
-                    <td>{{ this.kda }}</td>
-                  </tr>
-                </table>
+              <table
+                class="container table-profile league-text small-text mt-4 small-text-iphone"
+                style="text-align: left"
+              >
+                <tr>
+                  <td>WINRATE:</td>
+                  <td>{{ this.winrate }}</td>
+                </tr>
+                <tr>
+                  <td>GAMES:</td>
+                  <td>{{ this.games }}</td>
+                </tr>
+                <tr>
+                  <td>RANK:</td>
+                  <td>{{ this.mmr }}</td>
+                </tr>
+                <tr>
+                  <td>KDA AVERAGE:</td>
+                  <td>{{ this.kda }}</td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
@@ -152,7 +163,7 @@
             >
               <div class="card-content">
                 <h3 class="title is-4 league-text lc">CHAMPIONS STATS</h3>
-                <div class="content ">
+                <div class="content">
                   <div class="select">
                     <select v-model="actualChampion" @change="changeChampion">
                       <option>Select Champion</option>
@@ -247,7 +258,7 @@ export default {
       },
       actualChampion: "Select Champion",
       selectedChampion: {
-        kda: "",
+        kda: "\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002",
         winrate: "",
         games: "",
       },
@@ -256,7 +267,7 @@ export default {
       winrate: "",
       mmr: "",
       games: "",
-      kda: "",
+      kda: "\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002",
       series: [
         {
           name: "Winrate",
@@ -330,7 +341,7 @@ export default {
     async getUser() {
       try {
         const request = await axios.get(
-          "http://localhost:8082/api/user/" + this.username
+          "http://localhost:8080/api/user/" + this.username
         );
         const { data } = request;
         this.winrate = Math.trunc(data.winrate) + "%";
@@ -554,9 +565,9 @@ table td {
   }
 }
 
-  @media (max-width: 1250px) { 
-    .small-text-iphone {
-        font-size: 0.75rem;
-      }
-   }
+@media (max-width: 1250px) {
+  .small-text-iphone {
+    font-size: 0.75rem;
+  }
+}
 </style>

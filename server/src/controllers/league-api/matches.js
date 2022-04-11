@@ -14,7 +14,7 @@ function startClock() {
 }
 
 function checkTime() {
-    if (numberOfRequests >= 99) {
+    if (numberOfRequests >= 100) {
         let endTwo = new Date().getTime();
         console.log('in clock')
         while (endTwo - startClockValue < 120500) {

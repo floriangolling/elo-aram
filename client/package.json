@@ -12,6 +12,7 @@
     "axios": "^0.24.0",
     "buefy": "^0.9.13",
     "core-js": "^3.6.5",
+    "express": "^4.17.3",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.2",
     "vue-router": "^3.2.0",

@@ -48,10 +48,15 @@ userRouter.get('/:name', async(req, res) => {
         let championsWinrate = [];
         if (!name)
             return res.status(400).send({message: "not a valid name"})
+        global.worker.postMessage({name});
         const puuid = await leagueController.matchController.getUserPUUIDByNameEUW(name)
         let user = await User.findOne({where: {puuid: puuid}});
-        if (!user)
+        if (!user) {
             user = await User.create({puuid: puuid, username: name})
+            return res.status(201).send({
+                message: 'User created'
+            })
+        }
         const matchesLink = await UserMatch.findAll({where: {UserId: user.id }});
         for (match of matchesLink) {
             const playedMatch = await Match.findOne({where: {id: match.MatchId}})

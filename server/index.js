@@ -19,6 +19,7 @@ DBinfos.init(DBinfos.sequelize)
         console.log(`Running on http://localhost:${config.PORT}`);
         serverUP = true;
         const worker = new Worker("./checkForUpdate.js");
+        global.worker = worker;
     });
 }).catch((err) => {
     console.log('\x1b[31m%s\x1b[0m', err);
