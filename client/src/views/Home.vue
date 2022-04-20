@@ -341,7 +341,7 @@ export default {
     async getUser() {
       try {
         const request = await axios.get(
-          "http://localhost:8080/api/user/" + this.username
+          "http://35.180.98.93:8080/api/user/" + this.username
         );
         const { data } = request;
         this.winrate = Math.trunc(data.winrate) + "%";

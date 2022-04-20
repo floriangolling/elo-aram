@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
 /dist
-
+riot.txt
+.env
 
 # local env files
 .env.local
