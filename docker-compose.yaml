@@ -1,23 +1,11 @@
 version: "3"
 
 services:
-  postgres-elo:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
   client_elo_aram:
     depends_on:
       - server_elo_aram
     ports:
-      - "8081:8081"
+      - "3000:3000"
     build:
       context: ./client
       dockerfile: Dockerfile
@@ -27,17 +15,3 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    depends_on:
-      - postgres-elo
-  postgres-elo-two:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres

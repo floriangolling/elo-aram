@@ -49,18 +49,14 @@ userRouter.get('/:name', async(req, res) => {
         if (!name)
             return res.status(400).send({message: "not a valid name"})
         global.worker.postMessage({name});
-        const puuid = await leagueController.matchController.getUserPUUIDByNameEUW(name)
-        let user = await User.findOne({where: {puuid: puuid}});
+        let user = await User.findOne({where: {username: name}});
         if (!user) {
-            user = await User.create({puuid: puuid, username: name})
-            return res.status(201).send({
-                message: 'User created'
-            })
+            return res.status(404).send({message: "User not refreshed yet"});
         }
         const matchesLink = await UserMatch.findAll({where: {UserId: user.id }});
         for (match of matchesLink) {
             const playedMatch = await Match.findOne({where: {id: match.MatchId}})
-            const playedWith = findAllAlliesOfMatch(playedMatch.matchInfos, puuid);
+            const playedWith = findAllAlliesOfMatch(playedMatch.matchInfos,user. puuid);
             for (const el of playedWith)
                 totalAllies.push(el);
             let playerData = null;
