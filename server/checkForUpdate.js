@@ -8,16 +8,14 @@ async function checkForUpdate() {
     parentPort.on("message", message => {
         VIP.push(message.name);
     });
-    let id = parseInt(require('fs').readFileSync('last.txt', 'utf-8'))
     const promise = await new Promise(async (resolve, reject) => {
         try {
+	    let id = 1;
             let start = new Date().getTime();
             for (;;) {
-                const user = await User.findOne({where: {id}});
-                if (user.id < id)
-                    continue;
+		console.log('vip', VIP);
                 if (VIP.length !== 0) {
-		    const vipName = VIP.pop();
+		    const vipName = VIP.pop().toLowerCase();
                     let VIPUSER = await User.findOne({where: { username: vipName }});
                     if (VIPUSER) {
                         console.log(VIPUSER.username);
@@ -32,14 +30,12 @@ async function checkForUpdate() {
 				await VIPUSER.save();
 			}
 			await refreshUser(VIPUSER.puuid);
-			}
+		    }
                     continue;
                 }
+		const user = await User.findOne({where: {id}});
                 console.log(user.username);
-                await refreshUser(user.puuid)
-                require('fs').writeFileSync('last.txt', user.id.toString() ,{
-                    encoding: 'utf-8'
-                })
+                await refreshUser(user.puuid);
 		id++;
             }
         } catch (error) {

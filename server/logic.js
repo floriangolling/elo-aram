@@ -18,7 +18,6 @@ async function getMatchesFilter(puuid) {
                 let matchNameNoEUW = match.toString().substring(5);
                 let Matche = await Match.findOne({where: {matchID: matchNameNoEUW}})
                 if (Matche) {
-                    console.log('skipping')
                     continue;
                 }
                 const m = await leagueController.matchController.getMatchInfoFromID(match);
@@ -41,12 +40,12 @@ async function checkUserAndRefreshUsername(participants) {
     return new Promise(async (resolve, reject) => {
         try {
             let user = await User.findOne({where: {puuid: participants.puuid}});
-            if (user && participants.summonerName != user.username) {
-                await user.set({username: participants.summonerName})
+            if (user && participants.summonerName.toLowerCase() != user.username) {
+                await user.set({username: participants.summonerName.toLowerCase()})
                 await user.save();
             }
             if (!user) {
-                user = await User.create({puuid: participants.puuid, username: participants.summonerName})
+                user = await User.create({puuid: participants.puuid, username: participants.summonerName.toLowerCase()})
             }
             resolve(user);
         } catch (error) {
@@ -82,7 +81,7 @@ async function checkWinner(match) {
         for (participants of match.participants) {
             const user = await User.findOne({where: {puuid: participants.puuid}});
             if (!user)
-                user = await User.create({puuid: participants.puuid, username: participants.summonerName, elo: eloStacked});
+                user = await User.create({puuid: participants.puuid, username: participants.summonerName.toLowerCase(), elo: eloStacked});
             if (obj.teamID1 === -1) {
                 obj.teamID1 = participants.teamId;
                 obj.teamID1Elo += user.elo;

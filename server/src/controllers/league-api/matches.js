@@ -16,17 +16,14 @@ function startClock() {
 function checkTime() {
     if (numberOfRequests >= 100) {
         let endTwo = new Date().getTime();
-        console.log('in clock')
         while (endTwo - startClockValue < 120500) {
             endTwo = new Date().getTime();
         }
-        console.log('out clock')
     }
 }
 
 function setNumberOfRequest(headers) {
     numberOfRequests = parseInt(headers['x-app-rate-limit-count'].split(',')[1].split(':')[0]);
-    console.log(numberOfRequests);
 }
 
 async function getUserPUUIDByNameEUW(username) {
