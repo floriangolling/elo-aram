@@ -28,7 +28,6 @@ async function getMatchesFilter(puuid) {
         } catch (error) {
             if (error.response && error.response.status === 429) {
                 console.log('too many request')
-                while(1);
             }
             console.log(error);
             resolve([]);
