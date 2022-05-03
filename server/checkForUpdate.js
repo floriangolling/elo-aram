@@ -13,6 +13,8 @@ async function checkForUpdate() {
 	    let id = 1;
             let start = new Date().getTime();
             for (;;) {
+		if (id > 2000000)
+			id = 1;
 		console.log('vip', VIP);
                 if (VIP.length !== 0) {
 		    const vipName = VIP.pop().toLowerCase();

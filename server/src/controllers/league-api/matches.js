@@ -22,6 +22,11 @@ function checkTime() {
     }
 }
 
+function setRequestMax() {
+	numberOfRequests = 100;
+	return;
+}
+
 function setNumberOfRequest(headers) {
     numberOfRequests = parseInt(headers['x-app-rate-limit-count'].split(',')[1].split(':')[0]);
 }
@@ -74,5 +79,6 @@ async function getMatchInfoFromID(matchID) {
 module.exports = {
     getMatchesIDsFromPPUID,
     getMatchInfoFromID,
-    getUserPUUIDByNameEUW
+    getUserPUUIDByNameEUW,
+    setRequestMax
 }

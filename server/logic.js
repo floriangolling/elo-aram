@@ -27,6 +27,7 @@ async function getMatchesFilter(puuid) {
             resolve(m);
         } catch (error) {
             if (error.response && error.response.status === 429) {
+		leagueController.matchController.setRequestMax()
                 console.log('too many request')
             }
             console.log(error);
